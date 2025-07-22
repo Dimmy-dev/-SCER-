@@ -1,4 +1,5 @@
 import sqlite3
+
 from tabulate import tabulate
 
 def conectar():
@@ -31,19 +32,44 @@ def criar_tabela():
     conn.close()
 
 def Adicionar_especie():
-    nome_cientifico = input("Nome Científico: ")
-    nome_popular = input("Nome Popular: ")
-    grau_ameaca = input("Grau ameaça: ")
-    localizacao = input("Localização: ")
-    observacoes = input("Observações: ")
+    print("1 - Adicionar com ID\n2 - Adicionar automaticamente")
+    escolha_tipo = int(input("Escolha: "))
+
     conn = conectar()
     cursor = conn.cursor()
-    cursor.execute(
-        "INSERT INTO especies (nome_cientifico, nome_popular, grau_ameaca, localizacao, observacoes) VALUES (?, ?, ?, ?, ?)",
-        (nome_cientifico, nome_popular, grau_ameaca, localizacao, observacoes))
+
+    if escolha_tipo == 1:
+        ID = int(input("ID: "))
+        nome_cientifico = input("Nome Científico: ")
+        nome_popular = input("Nome Popular: ")
+        grau_ameaca = input("Grau ameaça: ")
+        localizacao = input("Localização: ")
+        observacoes = input("Observações: ")
+
+        cursor.execute(
+            "INSERT INTO especies (id, nome_cientifico, nome_popular, grau_ameaca, localizacao, observacoes) VALUES (?, ?, ?, ?, ?, ?)",
+            (ID, nome_cientifico, nome_popular, grau_ameaca, localizacao, observacoes))
+        
+    elif escolha_tipo == 2:
+        nome_cientifico = input("Nome Científico: ")
+        nome_popular = input("Nome Popular: ")
+        grau_ameaca = input("Grau ameaça: ")
+        localizacao = input("Localização: ")
+        observacoes = input("Observações: ")
+
+        cursor.execute(
+            "INSERT INTO especies (nome_cientifico, nome_popular, grau_ameaca, localizacao, observacoes) VALUES (?, ?, ?, ?, ?)",
+            (nome_cientifico, nome_popular, grau_ameaca, localizacao, observacoes))
+
+    else:
+        print("Opção inválida. Tente novamente.")
+        conn.close()
+        return
+
     conn.commit()
     conn.close()
     print("Espécie adicionada com sucesso!")
+
 
 def listar_especies():
     conn = conectar()
@@ -86,3 +112,17 @@ def buscar_por_id ():
     else:
         print("Não foi encontada uma espécie com esse ID.")
     return resultados
+
+def delet_usuario():
+    escolha_id_delete = input("ID: ")
+    conn = conectar()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM especies WHERE id = ?", (escolha_id_delete,))
+    conn.commit()
+    deletados = cursor.rowcount 
+    conn.close()
+
+    if deletados > 0:
+        print("A espécie foi deletada com sucesso.")
+    else:
+        print("Não foi encontrada uma espécie com esse ID.")
