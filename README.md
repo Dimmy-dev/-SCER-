@@ -1,4 +1,4 @@
-# 🌱 Sistema de Cadastro de Espécies em Risco
+# 🌱 Sistema de Cadastro de Espécies em Risco (SCER)
 
 Este projeto foi desenvolvido em Python com SQLite em conjunto com o software Vscode DB Browser para cadastrar, consultar e gerenciar espécies da fauna e flora brasileira ameaçadas de extinção. Inspirado na missão do Instituto Chico Mendes (ICMBio), o projeto visa aplicar conhecimentos em banco de dados, SQL, e desenvolvimento back-end.
 
