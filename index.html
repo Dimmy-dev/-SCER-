@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html class="dark" lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>SCER — Monitoramento de Espécies em Risco</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .material-symbols-outlined.filled { font-variation-settings: 'FILL' 1; }
+    </style>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Tailwind Configuration -->
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "tertiary-fixed": "#ffe08d", "surface-tint": "#00e478", "on-tertiary-fixed": "#241a00", "on-secondary-fixed": "#002113", "surface-container": "#1e293b", "primary-container": "#00ff87", "on-secondary-container": "#00311f", "background": "#0f172a", "outline": "#475569", "secondary-fixed": "#6ffbbe", "surface-container-lowest": "#020617", "inverse-on-surface": "#334155", "secondary": "#4edea3", "secondary-container": "#00a572", "on-surface-variant": "#94a3b8", "surface": "#0f172a", "on-tertiary": "#3d2f00", "primary": "#f1ffef", "error-container": "#93000a", "error": "#ffb4ab", "tertiary": "#fffaf7", "on-primary-fixed-variant": "#005227", "surface-container-high": "#334155", "on-tertiary-container": "#795f01", "on-surface": "#f8fafc", "on-secondary": "#003824", "tertiary-fixed-dim": "#e5c364", "on-tertiary-fixed-variant": "#584400", "surface-container-highest": "#475569", "tertiary-container": "#ffdb79", "inverse-primary": "#006d36", "on-primary-container": "#007138", "surface-bright": "#1e293b", "surface-dim": "#0f172a", "surface-container-low": "#0f172a", "secondary-fixed-dim": "#4edea3", "on-secondary-fixed-variant": "#005236", "on-primary": "#003919", "primary-fixed-dim": "#00e478", "outline-variant": "#334155", "primary-fixed": "#60ff98", "on-primary-fixed": "#00210c", "on-background": "#f8fafc", "inverse-surface": "#f8fafc", "on-error": "#690005", "on-error-container": "#ffdad6", "surface-variant": "#334155"
+                    },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                    spacing: { "margin-desktop": "48px", "margin-mobile": "16px", "gutter": "24px", "unit": "4px", "container-max": "1440px" },
+                    fontFamily: { "display-lg": ["Montserrat", "sans-serif"], "body-md": ["Inter", "sans-serif"], "headline-md": ["Montserrat", "sans-serif"], "headline-lg": ["Montserrat", "sans-serif"], "label-sm": ["Inter", "sans-serif"], "body-lg": ["Inter", "sans-serif"] },
+                    fontSize: { "display-lg": ["clamp(2.5rem, 5vw, 4rem)", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }], "body-md": ["1rem", { "lineHeight": "1.6", "fontWeight": "400" }], "headline-md": ["1.5rem", { "lineHeight": "1.3", "fontWeight": "600" }], "headline-lg": ["clamp(1.75rem, 3vw, 2.5rem)", { "lineHeight": "1.2", "fontWeight": "700" }], "label-sm": ["0.75rem", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }], "body-lg": ["1.125rem", { "lineHeight": "1.7", "fontWeight": "400" }] }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: theme('colors.background'); color: theme('colors.on-background'); overflow-x: hidden; }
+        .glass-panel { background: rgba(15, 23, 42, 0.6); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .neon-border { border: 1px solid theme('colors.primary-container'); box-shadow: 0 0 10px rgba(0, 255, 135, 0.15); }
+        .neon-glow:hover { box-shadow: 0 0 20px rgba(0, 255, 135, 0.3); }
+        .neon-focus:focus-within { border-color: theme('colors.primary-container'); box-shadow: 0 0 15px rgba(0, 255, 135, 0.2); outline: none; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: theme('colors.surface-container-low'); }
+        ::-webkit-scrollbar-thumb { background: theme('colors.outline-variant'); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: theme('colors.outline'); }
+        .bg-organic { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1; background-image: radial-gradient(circle at 100% 0%, rgba(0, 255, 135, 0.05) 0%, transparent 50%), radial-gradient(circle at 0% 100%, rgba(0, 255, 135, 0.05) 0%, transparent 50%); }
+        .badge-vulneravel { background: rgba(255, 219, 121, 0.15); border: 1px solid theme('colors.tertiary-container'); color: theme('colors.tertiary-container'); }
+        .badge-em-perigo { background: rgba(255, 165, 0, 0.15); border: 1px solid #FFA500; color: #FFA500; }
+        .badge-critico { background: rgba(255, 180, 171, 0.15); border: 1px solid theme('colors.error'); color: theme('colors.error'); }
+        .view-layer { opacity: 0; pointer-events: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; transition: opacity 0.3s ease-in-out; }
+        .view-layer.active { opacity: 1; pointer-events: auto; position: relative; }
+        
+        /* Loading Spinner */
+        .spinner { border: 3px solid rgba(255,255,255,0.1); border-top: 3px solid theme('colors.primary-container'); border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed; bottom: 20px; right: 20px; z-index: 9999;
+            transform: translateY(100px); opacity: 0; transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+
+        @media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
+    </style>
+</head>
+<body class="font-body-md text-body-md antialiased min-h-screen flex selection:bg-primary-container selection:text-on-primary-container bg-slate-900">
+    <div class="bg-organic"></div>
+    <!-- SideNavBar -->
+    <nav class="hidden md:flex flex-col fixed left-0 top-0 h-screen w-[240px] border-r shadow-sm py-margin-desktop z-50 transition-transform duration-300 bg-[#061a12] border-primary/10">
+        <div class="px-gutter mb-8 flex flex-col items-center text-center">
+            <div class="w-20 h-20 rounded-full overflow-hidden border-2 border-primary-container shadow-[0_0_15px_rgba(0,255,135,0.2)] mb-4">
+                <img alt="SCER Logo" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtbOeEdRAypMlrXTkmvt4_Y6Q0UApHcq2lXSAkfyHXH0sOS6at8i9-jNwm3SUAGEyVJiEpMz6Usb3Mdtp6_24e_ljwUrtSz-3Gip9jYQFzDnTziBlTKhh8OICegvicFngnzD4XI2whlvkDmDugOWmuuFVXuao7ZWn8oCOgquhUUQODtWgCfc3LtEUjatWj5WlTwaHxxD2e4blO-5SaNT8W7z_iSIe8s3lPxEEqfYw0fvp9ssNqse60ZCkUL5Oxn6rrMgXtFJ9lvaFn">
+            </div>
+            <h1 class="font-headline-lg text-primary-fixed tracking-tight">SCER</h1>
+            <p class="text-label-sm text-on-surface-variant uppercase tracking-widest mt-1">Biodiversidade<br>Brasileira</p>
+        </div>
+        <ul class="flex-1 px-4 space-y-2">
+            <li>
+                <button class="w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 transition-colors duration-200 scale-95 active:scale-90 font-body-md nav-btn bg-primary/20 text-primary-fixed-dim font-bold border-l-4 border-primary-fixed active-nav" data-view="list">
+                    <span class="material-symbols-outlined text-[20px] filled">view_list</span>
+                    <span>Listar Todas</span>
+                </button>
+            </li>
+            <li>
+                <button class="w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 transition-colors duration-200 scale-95 active:scale-90 font-body-md nav-btn hover:bg-[#0d2b1f] text-on-surface-variant hover:text-on-surface" data-view="add">
+                    <span class="material-symbols-outlined text-[20px]">add_circle</span>
+                    <span>Adicionar</span>
+                </button>
+            </li>
+            <li>
+                <button class="w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 transition-colors duration-200 scale-95 active:scale-90 font-body-md nav-btn hover:bg-[#0d2b1f] text-on-surface-variant hover:text-on-surface" data-view="threat">
+                    <span class="material-symbols-outlined text-[20px]">warning</span>
+                    <span>Listar por Ameaça</span>
+                </button>
+            </li>
+            <li>
+                <button class="w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 transition-colors duration-200 scale-95 active:scale-90 font-body-md nav-btn hover:bg-[#0d2b1f] text-on-surface-variant hover:text-on-surface" data-view="search">
+                    <span class="material-symbols-outlined text-[20px]">search</span>
+                    <span>Buscar ID</span>
+                </button>
+            </li>
+            <li>
+                <button class="w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 text-on-surface-variant hover:text-error hover:bg-error/10 transition-colors duration-200 scale-95 active:scale-90 font-body-md nav-btn group hover:bg-[#0d2b1f] hover:text-on-surface" data-view="delete">
+                    <span class="material-symbols-outlined text-[20px] group-hover:text-error transition-colors">delete</span>
+                    <span>Deletar ID</span>
+                </button>
+            </li>
+        </ul>
+        <div class="px-6 mt-auto">
+            <button class="w-full py-3 border border-outline-variant rounded-lg text-label-sm uppercase font-bold text-on-surface flex items-center justify-center gap-2 hover:border-primary-container hover:text-primary-container transition-all bg-[#0d2b1f]">
+                <span class="material-symbols-outlined text-[16px]">explore</span>
+                Mapa
+            </button>
+        </div>
+    </nav>
+    <header class="md:hidden fixed top-0 w-full bg-slate-900/90 backdrop-blur-md border-b border-outline-variant/30 z-50 px-gutter py-4 flex justify-between items-center">
+        <h1 class="font-headline-md text-primary-fixed tracking-tight">SCER</h1>
+        <button class="text-on-surface"><span class="material-symbols-outlined">menu</span></button>
+    </header>
+    <main class="flex-1 md:ml-[240px] pt-[80px] md:pt-0 p-gutter md:p-margin-desktop min-h-screen relative overflow-hidden bg-slate-900">
+        <div class="hidden md:flex justify-between items-center mb-12 border-b border-outline-variant/30 pb-6"><div></div><div class="flex items-center gap-6"></div></div>
+        
+        <div class="relative w-full h-full max-w-container-max mx-auto" id="view-container">
+            <!-- VIEW: LISTAR TODAS -->
+            <section class="view-layer flex flex-col gap-8 active" id="view-list">
+                <header class="max-w-3xl">
+                    <h2 class="font-display-lg text-on-surface mb-2">Biodiversidade Brasileira <span class="text-primary-container">em Risco</span></h2>
+                    <p class="font-body-lg text-on-surface-variant">Sistema Integrado de Monitoramento e Conservação.</p>
+                </header>
+                <div class="flex flex-wrap gap-3 mb-4">
+                    <button class="filter-btn active px-4 py-2 rounded-full border border-primary-container bg-primary-container/10 text-primary-fixed text-label-sm font-bold uppercase tracking-wider hover:bg-primary-container/20 transition-colors">Todos</button>
+                </div>
+                
+                <div id="loading-list" class="flex justify-center items-center py-20 hidden">
+                    <div class="spinner border-t-primary-fixed w-12 h-12"></div>
+                </div>
+
+                <div id="empty-state" class="hidden text-center py-20">
+                    <span class="material-symbols-outlined text-[48px] mb-4 opacity-50 text-on-surface-variant">search_off</span>
+                    <h2 class="font-headline-md text-on-surface mb-2">Nenhuma espécie cadastrada</h2>
+                    <p class="text-on-surface-variant">Adicione novos táxons no menu "Adicionar".</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-[320px]" id="grid-cards">
+                    <!-- Cards dinâmicos -->
+                </div>
+            </section>
+
+            <!-- VIEW: ADICIONAR -->
+            <section class="view-layer flex flex-col justify-center items-center h-full min-h-[600px] hidden" id="view-add">
+                <div class="glass-panel p-8 rounded-2xl w-full max-w-2xl border-t-4 border-t-primary-container shadow-[0_10px_40px_rgba(0,0,0,0.5)] bg-slate-800">
+                    <header class="mb-8 border-b border-outline-variant/30 pb-4">
+                        <h2 id="title-add-view" class="font-headline-lg text-primary-fixed mb-1 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[32px]">add_box</span>
+                            Adicionar Nova Espécie
+                        </h2>
+                        <p class="font-body-md text-on-surface-variant">Registre um novo táxon no sistema de monitoramento.</p>
+                    </header>
+                    <form class="space-y-6" id="form-add" onsubmit="event.preventDefault(); window.adicionarEspecie(event);">
+                        <input type="hidden" id="form-id" value="">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="font-label-sm text-on-surface uppercase tracking-wider">Nome Comum</label>
+                                <div class="relative neon-focus rounded-lg bg-slate-900 border border-outline-variant transition-all">
+                                    <input id="form-nome-popular" class="w-full bg-transparent border-none text-on-surface py-3 px-4 focus:ring-0 font-body-md" placeholder="Ex: Onça-pintada" required type="text">
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="font-label-sm text-on-surface uppercase tracking-wider">Nome Científico</label>
+                                <div class="relative neon-focus rounded-lg bg-slate-900 border border-outline-variant transition-all">
+                                    <input id="form-nome-cientifico" class="w-full bg-transparent border-none text-on-surface py-3 px-4 focus:ring-0 font-body-md italic" placeholder="Panthera onca" required type="text">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="font-label-sm text-on-surface uppercase tracking-wider">Bioma Principal</label>
+                                <div class="relative neon-focus rounded-lg bg-slate-900 border border-outline-variant transition-all">
+                                    <select id="form-bioma" title="Bioma Principal" required class="w-full bg-transparent border-none text-on-surface py-3 px-4 focus:ring-0 font-body-md appearance-none">
+                                        <option class="bg-surface text-on-surface-variant" value="">Selecione um bioma...</option>
+                                        <option class="bg-surface" value="Amazônia">Amazônia</option>
+                                        <option class="bg-surface" value="Cerrado">Cerrado</option>
+                                        <option class="bg-surface" value="Mata Atlântica">Mata Atlântica</option>
+                                        <option class="bg-surface" value="Caatinga">Caatinga</option>
+                                        <option class="bg-surface" value="Pampa">Pampa</option>
+                                        <option class="bg-surface" value="Pantanal">Pantanal</option>
+                                    </select>
+                                    <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">arrow_drop_down</span>
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="font-label-sm text-on-surface uppercase tracking-wider">Status de Conservação</label>
+                                <div class="relative neon-focus rounded-lg bg-slate-900 border border-outline-variant transition-all">
+                                    <select id="form-grau-ameaca" title="Status de Conservação" required class="w-full bg-transparent border-none text-on-surface py-3 px-4 focus:ring-0 font-body-md appearance-none">
+                                        <option class="bg-surface text-on-surface-variant" value="">Classificação IUCN...</option>
+                                        <option class="bg-surface text-tertiary-container" value="Vulnerável">Vulnerável (VU)</option>
+                                        <option class="bg-surface text-orange-400" value="Em perigo">Em Perigo (EN)</option>
+                                        <option class="bg-surface text-error" value="Criticamente em perigo">Criticamente em Perigo (CR)</option>
+                                    </select>
+                                    <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant">arrow_drop_down</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="font-label-sm text-on-surface uppercase tracking-wider">Observações</label>
+                            <div class="relative neon-focus rounded-lg bg-slate-900 border border-outline-variant transition-all">
+                                <textarea id="form-observacoes" class="w-full bg-transparent border-none text-on-surface py-3 px-4 focus:ring-0 font-body-md" placeholder="Insira observações relevantes sobre o estado da espécie..." rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="font-label-sm text-on-surface uppercase tracking-wider">Foto da Espécie</label>
+                            <div class="relative neon-focus rounded-lg bg-slate-900 border border-outline-variant transition-all p-2 flex items-center">
+                                <input id="form-imagem" title="Upload de Foto" accept="image/jpeg, image/png, image/webp" class="w-full text-on-surface font-body-md file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-primary-container/20 file:text-primary-fixed hover:file:bg-primary-container/30 cursor-pointer" type="file">
+                            </div>
+                        </div>
+                        <div class="pt-6 flex justify-end gap-4 border-t border-outline-variant/30">
+                            <button type="reset" onclick="window.resetFormState()" class="px-6 py-2 rounded-lg font-label-sm uppercase text-on-surface-variant hover:text-on-surface transition-colors border border-transparent hover:border-outline-variant">Limpar</button>
+                            <button type="submit" id="btn-add-submit" class="px-8 py-2 rounded-lg font-label-sm uppercase bg-primary-container text-on-primary-container hover:bg-primary-fixed-dim transition-colors neon-glow flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[18px]" id="icon-add-submit">save</span>
+                                <span id="text-add-submit">Registrar Espécie</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- VIEW: DELETAR -->
+            <section class="view-layer hidden flex flex-col justify-center items-center h-full min-h-[600px]" id="view-delete">
+                <div class="glass-panel p-8 rounded-2xl w-full max-w-lg border-t-4 border-t-error shadow-[0_10px_40px_rgba(0,0,0,0.5)] text-center bg-slate-800">
+                    <span class="material-symbols-outlined text-[48px] text-error mb-4">warning</span>
+                    <h2 class="font-headline-lg text-on-surface mb-2">Remover Registro</h2>
+                    <p class="font-body-md text-on-surface-variant mb-8">Esta ação é irreversível. Insira o ID exato da espécie para confirmar a exclusão do banco de dados.</p>
+                    <form onsubmit="event.preventDefault(); window.deletarEspecie(event);">
+                        <div class="relative max-w-sm mx-auto group">
+                            <input id="input-delete-id" required type="number" min="1" class="w-full bg-slate-900 border-2 border-outline-variant text-center text-on-surface py-4 px-4 rounded-lg font-mono text-lg focus:outline-none focus:border-error focus:ring-1 focus:ring-error transition-all" placeholder="Ex: 42">
+                        </div>
+                        <button type="submit" id="btn-delete-submit" class="mt-8 px-8 py-3 rounded-lg font-label-sm uppercase bg-error text-on-error hover:bg-error-container hover:text-error transition-colors w-full max-w-sm mx-auto flex items-center justify-center gap-2 border border-transparent hover:border-error">
+                            <span class="material-symbols-outlined text-[18px]" id="icon-delete-submit">delete_forever</span>
+                            <span>Confirmar Exclusão</span>
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- VIEW: LISTAR POR AMEAÇA -->
+            <section class="view-layer flex flex-col gap-8 hidden" id="view-threat">
+                <header class="max-w-3xl">
+                    <h2 class="font-display-lg text-on-surface mb-2">Buscar por grau de ameaça</h2>
+                    <p class="font-body-lg text-on-surface-variant">Classificação baseada nos critérios da IUCN.</p>
+                </header>
+                <div class="flex flex-col sm:flex-row items-center gap-4 mb-8">
+                    <label class="font-label-sm text-on-surface-variant uppercase tracking-widest">Filtrar Resultados:</label>
+                    <div class="relative neon-focus rounded-lg bg-slate-900 border border-outline-variant transition-all min-w-[240px]">
+                        <select id="select-threat-filter" title="Filtro de Grau de Ameaça" class="w-full bg-transparent border-none text-on-surface py-3 pl-4 pr-10 focus:ring-0 font-body-md appearance-none cursor-pointer">
+                            <option class="bg-slate-900" value="all">Todas as Categorias</option>
+                            <option class="bg-slate-900 text-tertiary-container" value="Vulnerável">Vulnerável (VU)</option>
+                            <option class="bg-slate-900 text-orange-400" value="Em perigo">Em Perigo (EN)</option>
+                            <option class="bg-slate-900 text-error" value="Criticamente em perigo">Criticamente em Perigo (CR)</option>
+                        </select>
+                        <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-primary-container">filter_list</span>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <!-- Vulnerável -->
+                    <button onclick="document.getElementById('select-threat-filter').value='Vulnerável'; document.getElementById('select-threat-filter').dispatchEvent(new Event('change'));" class="p-6 rounded-2xl bg-slate-800 border-2 border-tertiary-container/30 hover:border-tertiary-container hover:bg-tertiary-container/5 transition-all text-left flex flex-col justify-between h-40">
+                        <div class="flex justify-between items-start">
+                            <span class="font-headline-md text-tertiary-container">Vulnerável</span>
+                            <span class="material-symbols-outlined text-tertiary-container opacity-50">warning</span>
+                        </div>
+                        <div>
+                            <span id="count-vu" class="text-4xl font-display-lg text-on-surface">...</span>
+                            <span class="text-label-sm text-on-surface-variant ml-2 uppercase">Espécies</span>
+                        </div>
+                    </button>
+                    <!-- Em Perigo -->
+                    <button onclick="document.getElementById('select-threat-filter').value='Em perigo'; document.getElementById('select-threat-filter').dispatchEvent(new Event('change'));" class="p-6 rounded-2xl bg-slate-800 border-2 border-orange-400/30 hover:border-orange-400 hover:bg-orange-400/5 transition-all text-left flex flex-col justify-between h-40">
+                        <div class="flex justify-between items-start">
+                            <span class="font-headline-md text-orange-400">Em Perigo</span>
+                            <span class="material-symbols-outlined text-orange-400 opacity-50">gpp_maybe</span>
+                        </div>
+                        <div>
+                            <span id="count-en" class="text-4xl font-display-lg text-on-surface">...</span>
+                            <span class="text-label-sm text-on-surface-variant ml-2 uppercase">Espécies</span>
+                        </div>
+                    </button>
+                    <!-- Criticamente em Perigo -->
+                    <button onclick="document.getElementById('select-threat-filter').value='Criticamente em perigo'; document.getElementById('select-threat-filter').dispatchEvent(new Event('change'));" class="p-6 rounded-2xl bg-slate-800 border-2 border-error/30 hover:border-error hover:bg-error/5 transition-all text-left flex flex-col justify-between h-40">
+                        <div class="flex justify-between items-start">
+                            <span class="font-headline-md text-error">Criticamente em Perigo</span>
+                            <span class="material-symbols-outlined text-error opacity-50">error</span>
+                        </div>
+                        <div>
+                            <span id="count-cr" class="text-4xl font-display-lg text-on-surface">...</span>
+                            <span class="text-label-sm text-on-surface-variant ml-2 uppercase">Espécies</span>
+                        </div>
+                    </button>
+                </div>
+                <div id="loading-threat" class="flex justify-center items-center py-20 hidden">
+                    <div class="spinner border-t-primary-fixed w-12 h-12"></div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[320px]" id="grid-cards-threat">
+                    <!-- Cards dinâmicos -->
+                </div>
+            </section>
+
+            <!-- VIEW: BUSCAR REGISTRO -->
+            <section class="view-layer flex flex-col gap-8 hidden" id="view-search">
+                <div class="flex flex-col items-center justify-center min-h-[40vh] w-full max-w-2xl mx-auto text-center">
+                    <span class="material-symbols-outlined text-[64px] text-primary-fixed opacity-80 mb-6">fingerprint</span>
+                    <h2 class="font-display-lg text-on-surface mb-3">Buscar Registro</h2>
+                    <p class="font-body-lg text-on-surface-variant mb-10">Insira o identificador único da espécie para acesso direto aos dados.</p>
+                    <form class="w-full relative group max-w-xl" onsubmit="event.preventDefault(); window.buscarPorId(event);">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-primary-container to-secondary-container rounded-xl blur opacity-25 group-focus-within:opacity-75 transition duration-500"></div>
+                        <div class="relative flex items-center w-full bg-slate-900 rounded-xl border border-outline-variant/50 focus-within:border-primary-container p-2">
+                            <span class="material-symbols-outlined text-outline-variant ml-4 mr-2 group-focus-within:text-primary-container transition-colors">fingerprint</span>
+                            <input id="input-search-id" class="w-full bg-transparent border-none text-on-surface py-4 px-2 focus:ring-0 font-mono text-xl uppercase placeholder:normal-case placeholder:text-outline-variant/70" placeholder="Ex: 42" type="text" required>
+                            <button type="submit" id="btn-search-id" class="ml-2 px-8 py-4 rounded-lg font-label-sm uppercase bg-primary-container text-on-primary-container hover:bg-primary-fixed-dim transition-colors neon-glow whitespace-nowrap flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[18px] hidden" id="icon-search-id">autorenew</span>
+                                Scan
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div id="search-result-container" class="hidden w-full max-w-2xl mx-auto mt-4 transition-all">
+                    <!-- Card dinâmico -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Details Modal -->
+    <div class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4" id="species-modal">
+        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm modal-close cursor-pointer"></div>
+        <div class="relative w-full max-w-3xl bg-slate-800 rounded-2xl overflow-hidden border border-outline-variant shadow-2xl flex flex-col md:flex-row transform scale-95 opacity-0 transition-all duration-300" id="modal-panel">
+            <div class="w-full md:w-2/5 h-64 md:h-auto relative bg-slate-900">
+                <img alt="Espécie detalhe" class="w-full h-full object-cover" id="modal-img" src="">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-800 via-transparent to-transparent md:bg-gradient-to-r"></div>
+            </div>
+            <div class="w-full md:w-3/5 p-8 flex flex-col">
+                <button class="absolute top-4 right-4 text-on-surface-variant hover:text-on-surface modal-close p-1 rounded-full hover:bg-slate-700 transition-colors"><span class="material-symbols-outlined">close</span></button>
+                <div class="flex items-center gap-3 mb-2">
+                    <span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider" id="modal-badge"></span>
+                    <span class="text-label-sm text-outline font-mono">ID: <span id="modal-id"></span></span>
+                </div>
+                <h2 class="font-display-lg text-on-surface text-3xl mb-1" id="modal-title"></h2>
+                <h3 class="font-body-lg text-on-surface-variant italic mb-6" id="modal-scientific"></h3>
+                <div class="space-y-4 mb-8 flex-1">
+                    <div>
+                        <span class="text-label-sm uppercase text-outline tracking-widest block mb-1">Habitat / Bioma</span>
+                        <p class="font-body-md text-on-surface flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary-container text-[18px]">public</span>
+                            <span id="modal-biome"></span>
+                        </p>
+                    </div>
+                    <div>
+                        <span class="text-label-sm uppercase text-outline tracking-widest block mb-1">Nota de Observação</span>
+                        <p class="font-body-md text-on-surface-variant text-sm border-l-2 border-primary-container/30 pl-3 py-1" id="modal-obs"></p>
+                    </div>
+                </div>
+                <div class="flex gap-4 mt-auto pt-4 border-t border-outline-variant/30">
+                    <button onclick="window.editarEspecie()" class="flex-1 py-2 rounded-lg border border-primary-container text-primary-container hover:bg-primary-container/10 transition-colors font-label-sm uppercase flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-[18px]">edit_document</span> Editar
+                    </button>
+                    <button class="flex-1 py-2 rounded-lg bg-slate-700 border border-outline-variant text-on-surface hover:bg-slate-600 transition-colors font-label-sm uppercase flex items-center justify-center gap-2 modal-close">
+                        <span class="material-symbols-outlined text-[18px]">close</span> Fechar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast" class="toast flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl border bg-slate-800">
+        <span id="toast-icon" class="material-symbols-outlined text-[24px]"></span>
+        <span id="toast-msg" class="font-body-md font-bold"></span>
+    </div>
+
+    <!-- Application Script -->
+    <script>
+        // Util: Show Toast
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastIcon = document.getElementById('toast-icon');
+            const toastMsg = document.getElementById('toast-msg');
+            
+            if (type === 'success') {
+                toast.className = "toast show flex items-center gap-3 px-6 py-4 rounded-xl shadow-[0_10px_30px_rgba(0,255,135,0.2)] border border-primary-container bg-slate-800 text-primary-fixed";
+                toastIcon.textContent = "check_circle";
+            } else {
+                toast.className = "toast show flex items-center gap-3 px-6 py-4 rounded-xl shadow-[0_10px_30px_rgba(255,0,0,0.2)] border border-error bg-slate-800 text-error";
+                toastIcon.textContent = "error";
+            }
+            toastMsg.textContent = message;
+
+            setTimeout(() => { toast.classList.remove('show'); }, 4000);
+        }
+
+        // Util: Format Image Name
+        function formatarNomeImagem(nome) {
+            return nome.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '-') + ".jpg";
+        }
+
+        // Util: Badge Classes
+        function getBadgeInfo(ameaca) {
+            let a = (ameaca || '').toLowerCase();
+            if (a.includes("criticamente")) return { cls: 'badge-critico', text: 'Criticamente em perigo' };
+            if (a.includes("em perigo")) return { cls: 'badge-em-perigo', text: 'Em perigo' };
+            if (a.includes("vulnerável") || a.includes("vulneravel")) return { cls: 'badge-vulneravel', text: 'Vulnerável' };
+            return { cls: 'badge-vulneravel text-outline', text: ameaca };
+        }
+
+        // Util: Escape HTML to prevent XSS
+        function escapeHTML(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        // Global Data Store
+        let globalSpecies = {};
+
+        // Util: Create Card HTML
+        window.createCardHTML = function(esp) {
+            globalSpecies[esp.id] = esp;
+            const badge = getBadgeInfo(esp.grau_ameaca);
+            const imgName = formatarNomeImagem(esp.nome_popular);
+            // Cache buster for images
+            const cacheBuster = '?v=' + new Date().getTime();
+            return `
+            <article class="species-card group relative rounded-xl overflow-hidden cursor-pointer border border-outline-variant/30 hover:border-primary-container/50 transition-all duration-300" onclick="openModal(${esp.id})">
+                <div class="absolute inset-0 z-0 bg-slate-800">
+                    <img alt="${escapeHTML(esp.nome_popular)}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-60 group-hover:opacity-100" src="/imagens/${imgName}${cacheBuster}" onerror="this.src='https://via.placeholder.com/400x300?text=Sem+Foto'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent"></div>
+                </div>
+                <div class="relative z-10 flex flex-col h-full justify-end p-6">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-label-sm text-outline font-mono">ID: ${escapeHTML(esp.id)}</span>
+                        <span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider ${badge.cls}">${escapeHTML(badge.text)}</span>
+                    </div>
+                    <h3 class="font-headline-md text-on-surface mb-1">${escapeHTML(esp.nome_popular)}</h3>
+                    <p class="font-label-sm text-on-surface-variant flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[14px]">location_on</span> ${escapeHTML(esp.localizacao) || 'Desconhecido'}
+                    </p>
+                </div>
+            </article>`;
+        };
+
+        // Fetch & Render Species
+        async function loadEspecies() {
+            const grid = document.getElementById('grid-cards');
+            const loading = document.getElementById('loading-list');
+            const empty = document.getElementById('empty-state');
+            
+            grid.innerHTML = '';
+            loading.classList.remove('hidden');
+            empty.classList.add('hidden');
+
+            try {
+                const res = await fetch('/api/especies');
+                const data = await res.json();
+                
+                loading.classList.add('hidden');
+
+                if (data.length === 0) {
+                    empty.classList.remove('hidden');
+                    return;
+                }
+
+                data.forEach(esp => {
+                    grid.insertAdjacentHTML('beforeend', window.createCardHTML(esp));
+                });
+            } catch (err) {
+                loading.classList.add('hidden');
+                showToast("Erro ao carregar dados do servidor.", 'error');
+            }
+        }
+
+        // Load Statistics
+        async function loadEstatisticas() {
+            try {
+                const res = await fetch('/api/especies/estatisticas');
+                const data = await res.json();
+                let vu = 0, en = 0, cr = 0;
+                for (const [key, val] of Object.entries(data)) {
+                    const k = key.toLowerCase();
+                    if (k.includes('criticamente')) cr += val;
+                    else if (k.includes('em perigo')) en += val;
+                    else if (k.includes('vulnerável') || k.includes('vulneravel')) vu += val;
+                }
+                document.getElementById('count-vu').textContent = vu;
+                document.getElementById('count-en').textContent = en;
+                document.getElementById('count-cr').textContent = cr;
+            } catch (err) {
+                console.error("Erro estatísticas", err);
+            }
+        }
+
+        // Util: Reset Form State
+        window.resetFormState = function() {
+            document.getElementById('form-id').value = '';
+            document.getElementById('icon-add-submit').textContent = "save";
+            document.getElementById('text-add-submit').textContent = "Registrar Espécie";
+            document.getElementById('title-add-view').innerHTML = `<span class="material-symbols-outlined text-[32px]">add_box</span> Adicionar Nova Espécie`;
+        };
+
+        // Add or Update Specie
+        window.adicionarEspecie = async function(e) {
+            const btn = document.getElementById('btn-add-submit');
+            const icon = document.getElementById('icon-add-submit');
+            const form = document.getElementById('form-add');
+            
+            // Set loading state
+            const oldIcon = icon.textContent;
+            icon.textContent = "autorenew";
+            icon.classList.add('animate-spin');
+            btn.disabled = true;
+
+            const formData = new FormData();
+            formData.append('nome_popular', document.getElementById('form-nome-popular').value);
+            formData.append('nome_cientifico', document.getElementById('form-nome-cientifico').value);
+            formData.append('localizacao', document.getElementById('form-bioma').value);
+            formData.append('grau_ameaca', document.getElementById('form-grau-ameaca').value);
+            formData.append('observacoes', document.getElementById('form-observacoes').value);
+
+            const imgInput = document.getElementById('form-imagem');
+            if (imgInput && imgInput.files.length > 0) {
+                formData.append('imagem', imgInput.files[0]);
+            }
+
+            const idInput = document.getElementById('form-id').value;
+            const isEditing = idInput !== '';
+            const url = isEditing ? '/api/especies/' + idInput : '/api/especies';
+            const method = isEditing ? 'PUT' : 'POST';
+
+            try {
+                const res = await fetch(url, { method: method, body: formData });
+                const json = await res.json();
+                
+                if (res.ok) {
+                    showToast(isEditing ? "Espécie atualizada com sucesso!" : "Espécie adicionada com sucesso!");
+                    form.reset();
+                    window.resetFormState();
+                    // Auto-switch to list view and reload
+                    document.querySelector('[data-view="list"]').click();
+                    loadEspecies();
+                    loadEstatisticas();
+                } else {
+                    showToast(json.erro || "Erro ao salvar.", 'error');
+                }
+            } catch (err) {
+                showToast("Erro de conexão ao servidor.", 'error');
+            } finally {
+                icon.textContent = isEditing ? "edit" : "save";
+                icon.classList.remove('animate-spin');
+                btn.disabled = false;
+            }
+        };
+
+        // Delete Specie
+        window.deletarEspecie = async function(e) {
+            const btn = document.getElementById('btn-delete-submit');
+            const icon = document.getElementById('icon-delete-submit');
+            const inputId = document.getElementById('input-delete-id');
+            const id = inputId.value;
+
+            icon.textContent = "autorenew";
+            icon.classList.add('animate-spin');
+            btn.disabled = true;
+
+            try {
+                const res = await fetch('/api/especies/' + id, { method: 'DELETE' });
+                const json = await res.json();
+
+                if (res.ok) {
+                    showToast(`Espécie ID ${id} deletada com sucesso!`);
+                    inputId.value = '';
+                    loadEspecies(); // Refresh the list in the background
+                } else {
+                    showToast(json.erro || "Espécie não encontrada.", 'error');
+                }
+            } catch (err) {
+                showToast("Erro de conexão ao servidor.", 'error');
+            } finally {
+                icon.textContent = "delete_forever";
+                icon.classList.remove('animate-spin');
+                btn.disabled = false;
+            }
+        };
+
+        // Buscar Registro por ID
+        window.buscarPorId = async function(e) {
+            const btn = document.getElementById('btn-search-id');
+            const icon = document.getElementById('icon-search-id');
+            const input = document.getElementById('input-search-id');
+            const container = document.getElementById('search-result-container');
+            
+            icon.classList.remove('hidden');
+            icon.classList.add('animate-spin');
+            btn.disabled = true;
+            
+            try {
+                const res = await fetch('/api/especies/' + input.value);
+                const data = await res.json();
+                
+                container.innerHTML = '';
+                container.classList.remove('hidden');
+                
+                if (res.ok) {
+                    container.innerHTML = window.createCardHTML(data);
+                } else {
+                    showToast(data.erro || "Registro não encontrado.", 'error');
+                }
+            } catch(err) {
+                showToast("Erro de conexão ao buscar ID.", 'error');
+            } finally {
+                icon.classList.add('hidden');
+                icon.classList.remove('animate-spin');
+                btn.disabled = false;
+            }
+        };
+
+        // Modal Handling
+        window.openModal = function(id) {
+            const esp = globalSpecies[id];
+            if(!esp) return;
+
+            const modal = document.getElementById('species-modal');
+            const modalPanel = document.getElementById('modal-panel');
+            
+            const badge = getBadgeInfo(esp.grau_ameaca);
+            // textContent is inherently safe against XSS
+            document.getElementById('modal-id').textContent = esp.id;
+            document.getElementById('modal-title').textContent = esp.nome_popular;
+            document.getElementById('modal-scientific').textContent = esp.nome_cientifico;
+            document.getElementById('modal-biome').textContent = esp.localizacao || 'Não informado';
+            document.getElementById('modal-obs').textContent = esp.observacoes || 'Nenhuma observação registrada.';
+            
+            const cacheBuster = '?v=' + new Date().getTime();
+            document.getElementById('modal-img').src = '/imagens/' + formatarNomeImagem(esp.nome_popular) + cacheBuster;
+            
+            const badgeEl = document.getElementById('modal-badge');
+            badgeEl.className = `px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider ${badge.cls}`;
+            badgeEl.textContent = badge.text;
+
+            modal.classList.remove('hidden');
+            requestAnimationFrame(() => {
+                modalPanel.classList.remove('scale-95', 'opacity-0');
+                modalPanel.classList.add('scale-100', 'opacity-100');
+            });
+        };
+
+        window.editarEspecie = function() {
+            const id = document.getElementById('modal-id').textContent;
+            const esp = globalSpecies[id];
+            if(!esp) return;
+            
+            closeModal();
+            
+            // Navigate to Add View
+            document.querySelector('[data-view="add"]').click();
+            
+            // Populate form
+            document.getElementById('form-id').value = esp.id;
+            document.getElementById('form-nome-popular').value = esp.nome_popular;
+            document.getElementById('form-nome-cientifico').value = esp.nome_cientifico;
+            document.getElementById('form-bioma').value = esp.localizacao;
+            document.getElementById('form-grau-ameaca').value = esp.grau_ameaca;
+            document.getElementById('form-observacoes').value = esp.observacoes;
+            
+            // Change UI for Editing
+            document.getElementById('icon-add-submit').textContent = "edit";
+            document.getElementById('text-add-submit').textContent = "Salvar Alterações";
+            document.getElementById('title-add-view').innerHTML = `<span class="material-symbols-outlined text-[32px]">edit</span> Editar Espécie`;
+        };
+
+        const closeModal = () => {
+            const modal = document.getElementById('species-modal');
+            const modalPanel = document.getElementById('modal-panel');
+            modalPanel.classList.remove('scale-100', 'opacity-100');
+            modalPanel.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => { modal.classList.add('hidden'); }, 300);
+        };
+        
+        // Navigation Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const navBtns = document.querySelectorAll('.nav-btn');
+            const views = document.querySelectorAll('.view-layer');
+            const closeBtns = document.querySelectorAll('.modal-close');
+            
+            navBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Reset styling
+                    navBtns.forEach(b => {
+                        b.classList.remove('bg-primary/20', 'text-primary-fixed-dim', 'font-bold', 'border-l-4', 'border-primary-fixed', 'active-nav');
+                        b.classList.add('text-on-surface-variant');
+                        const icon = b.querySelector('.material-symbols-outlined');
+                        if (icon) icon.classList.remove('filled');
+                    });
+                    // Active styling
+                    if (btn.dataset.view !== 'delete') {
+                        btn.classList.remove('text-on-surface-variant');
+                        btn.classList.add('bg-primary/20', 'text-primary-fixed-dim', 'font-bold', 'border-l-4', 'border-primary-fixed', 'active-nav');
+                        const icon = btn.querySelector('.material-symbols-outlined');
+                        if (icon) icon.classList.add('filled');
+                    }
+                    if (btn.dataset.view === 'add' && document.getElementById('form-id').value === '') {
+                        window.resetFormState();
+                        document.getElementById('form-add').reset();
+                    }
+                    // Switch view
+                    views.forEach(v => {
+                        v.classList.remove('active');
+                        setTimeout(() => { if (!v.classList.contains('active')) v.classList.add('hidden'); }, 300);
+                    });
+                    const targetView = document.getElementById('view-' + btn.dataset.view);
+                    if (targetView) {
+                        targetView.classList.remove('hidden');
+                        requestAnimationFrame(() => targetView.classList.add('active'));
+                    }
+                });
+            });
+
+            closeBtns.forEach(btn => btn.addEventListener('click', closeModal));
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !document.getElementById('species-modal').classList.contains('hidden')) {
+                    closeModal();
+                }
+            });
+            
+            // Threat Filter Logic
+            const threatSelect = document.getElementById('select-threat-filter');
+            if (threatSelect) {
+                threatSelect.addEventListener('change', async (e) => {
+                    const val = e.target.value;
+                    const grid = document.getElementById('grid-cards-threat');
+                    const loading = document.getElementById('loading-threat');
+                    
+                    grid.innerHTML = '';
+                    loading.classList.remove('hidden');
+                    
+                    try {
+                        const url = val === 'all' ? '/api/especies' : `/api/especies/grau/${encodeURIComponent(val)}`;
+                        const res = await fetch(url);
+                        const data = await res.json();
+                        loading.classList.add('hidden');
+                        
+                        if (data.length === 0) {
+                            grid.innerHTML = '<p class="col-span-full text-center py-10 text-on-surface-variant">Nenhum resultado encontrado.</p>';
+                            return;
+                        }
+                        data.forEach(esp => {
+                            grid.insertAdjacentHTML('beforeend', window.createCardHTML(esp));
+                        });
+                    } catch (err) {
+                        loading.classList.add('hidden');
+                        showToast("Erro ao filtrar espécies.", 'error');
+                    }
+                });
+            }
+
+            // Initial Load
+            loadEspecies();
+            loadEstatisticas();
+        });
+    </script>
+</body>
+</html>
