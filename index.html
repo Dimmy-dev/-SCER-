@@ -434,7 +434,7 @@
             return `
             <article class="species-card group relative rounded-xl overflow-hidden cursor-pointer border border-outline-variant/30 hover:border-primary-container/50 transition-all duration-300" onclick="openModal(${esp.id})">
                 <div class="absolute inset-0 z-0 bg-slate-800">
-                    <img alt="${escapeHTML(esp.nome_popular)}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-60 group-hover:opacity-100" src="/imagens/${imgName}${cacheBuster}" onerror="this.src='https://via.placeholder.com/400x300?text=Sem+Foto'">
+                    <img alt="${escapeHTML(esp.nome_popular)}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-60 group-hover:opacity-100" src="/imagens/${escapeHTML(imgName)}${cacheBuster}" onerror="this.src='https://via.placeholder.com/400x300?text=Sem+Foto'">
                     <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent"></div>
                 </div>
                 <div class="relative z-10 flex flex-col h-full justify-end p-6">
