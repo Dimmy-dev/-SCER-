@@ -13,6 +13,7 @@
     <style>
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
         .material-symbols-outlined.filled { font-variation-settings: 'FILL' 1; }
+            @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -23,7 +24,7 @@
             theme: {
                 extend: {
                     colors: {
-                        "tertiary-fixed": "#ffe08d", "surface-tint": "#00e478", "on-tertiary-fixed": "#241a00", "on-secondary-fixed": "#002113", "surface-container": "#1e293b", "primary-container": "#00ff87", "on-secondary-container": "#00311f", "background": "#0f172a", "outline": "#475569", "secondary-fixed": "#6ffbbe", "surface-container-lowest": "#020617", "inverse-on-surface": "#334155", "secondary": "#4edea3", "secondary-container": "#00a572", "on-surface-variant": "#94a3b8", "surface": "#0f172a", "on-tertiary": "#3d2f00", "primary": "#f1ffef", "error-container": "#93000a", "error": "#ffb4ab", "tertiary": "#fffaf7", "on-primary-fixed-variant": "#005227", "surface-container-high": "#334155", "on-tertiary-container": "#795f01", "on-surface": "#f8fafc", "on-secondary": "#003824", "tertiary-fixed-dim": "#e5c364", "on-tertiary-fixed-variant": "#584400", "surface-container-highest": "#475569", "tertiary-container": "#ffdb79", "inverse-primary": "#006d36", "on-primary-container": "#007138", "surface-bright": "#1e293b", "surface-dim": "#0f172a", "surface-container-low": "#0f172a", "secondary-fixed-dim": "#4edea3", "on-secondary-fixed-variant": "#005236", "on-primary": "#003919", "primary-fixed-dim": "#00e478", "outline-variant": "#334155", "primary-fixed": "#60ff98", "on-primary-fixed": "#00210c", "on-background": "#f8fafc", "inverse-surface": "#f8fafc", "on-error": "#690005", "on-error-container": "#ffdad6", "surface-variant": "#334155"
+                        "tertiary-fixed": "#fcd34d", "surface-tint": "#10b981", "on-tertiary-fixed": "#451a03", "on-secondary-fixed": "#064e3b", "surface-container": "#042f2e", "primary-container": "#059669", "on-secondary-container": "#022c22", "background": "#022c22", "outline": "#3f6212", "secondary-fixed": "#34d399", "surface-container-lowest": "#022c22", "inverse-on-surface": "#ccfbf1", "secondary": "#10b981", "secondary-container": "#065f46", "on-surface-variant": "#94a3b8", "surface": "#022c22", "on-tertiary": "#78350f", "primary": "#f0fdf4", "error-container": "#991b1b", "error": "#f87171", "tertiary": "#fffbeb", "on-primary-fixed-variant": "#065f46", "surface-container-high": "#115e59", "on-tertiary-container": "#78350f", "on-surface": "#f8fafc", "on-secondary": "#ecfdf5", "tertiary-fixed-dim": "#fbbf24", "on-tertiary-fixed-variant": "#78350f", "surface-container-highest": "#0f766e", "tertiary-container": "#f59e0b", "inverse-primary": "#059669", "on-primary-container": "#047857", "surface-bright": "#134e4a", "surface-dim": "#022c22", "surface-container-low": "#022c22", "secondary-fixed-dim": "#10b981", "on-secondary-fixed-variant": "#065f46", "on-primary": "#022c22", "primary-fixed-dim": "#10b981", "outline-variant": "#115e59", "primary-fixed": "#34d399", "on-primary-fixed": "#022c22", "on-background": "#f8fafc", "inverse-surface": "#f8fafc", "on-error": "#450a0a", "on-error-container": "#fecaca", "surface-variant": "#115e59"
                     },
                     borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
                     spacing: { "margin-desktop": "48px", "margin-mobile": "16px", "gutter": "24px", "unit": "4px", "container-max": "1440px" },
@@ -35,15 +36,12 @@
     </script>
     <style>
         body { background-color: theme('colors.background'); color: theme('colors.on-background'); overflow-x: hidden; }
-        .glass-panel { background: rgba(15, 23, 42, 0.6); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .neon-border { border: 1px solid theme('colors.primary-container'); box-shadow: 0 0 10px rgba(0, 255, 135, 0.15); }
-        .neon-glow:hover { box-shadow: 0 0 20px rgba(0, 255, 135, 0.3); }
-        .neon-focus:focus-within { border-color: theme('colors.primary-container'); box-shadow: 0 0 15px rgba(0, 255, 135, 0.2); outline: none; }
+        .glass-panel { background: rgba(2, 44, 34, 0.65); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: theme('colors.surface-container-low'); }
         ::-webkit-scrollbar-thumb { background: theme('colors.outline-variant'); border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: theme('colors.outline'); }
-        .bg-organic { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1; background-image: radial-gradient(circle at 100% 0%, rgba(0, 255, 135, 0.05) 0%, transparent 50%), radial-gradient(circle at 0% 100%, rgba(0, 255, 135, 0.05) 0%, transparent 50%); }
+        .bg-organic { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1; background-image: url('https://images.unsplash.com/photo-1516214104703-d25078018d53?q=80&w=2070&auto=format&fit=crop'); background-size: cover; background-position: center; opacity: 0.12; filter: contrast(1.1) grayscale(0.2) sepia(0.3) hue-rotate(90deg); }
         .badge-vulneravel { background: rgba(255, 219, 121, 0.15); border: 1px solid theme('colors.tertiary-container'); color: theme('colors.tertiary-container'); }
         .badge-em-perigo { background: rgba(255, 165, 0, 0.15); border: 1px solid #FFA500; color: #FFA500; }
         .badge-critico { background: rgba(255, 180, 171, 0.15); border: 1px solid theme('colors.error'); color: theme('colors.error'); }
@@ -62,9 +60,10 @@
         .toast.show { transform: translateY(0); opacity: 1; }
 
         @media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
+            @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="font-body-md text-body-md antialiased min-h-screen flex selection:bg-primary-container selection:text-on-primary-container bg-slate-900">
+<body class="font-body-md text-body-md antialiased min-h-screen flex selection:bg-primary-container selection:text-on-primary-container bg-[#011c16]">
     <div class="bg-organic"></div>
     <!-- SideNavBar -->
     <nav class="hidden md:flex flex-col fixed left-0 top-0 h-screen w-[240px] border-r shadow-sm py-margin-desktop z-50 transition-transform duration-300 bg-[#061a12] border-primary/10">
@@ -114,17 +113,17 @@
             </button>
         </div>
     </nav>
-    <header class="md:hidden fixed top-0 w-full bg-slate-900/90 backdrop-blur-md border-b border-outline-variant/30 z-50 px-gutter py-4 flex justify-between items-center">
+    <header class="md:hidden fixed top-0 w-full bg-[#011c16]/90 backdrop-blur-md border-b border-outline-variant/30 z-50 px-gutter py-4 flex justify-between items-center">
         <h1 class="font-headline-md text-primary-fixed tracking-tight">SCER</h1>
         <button class="text-on-surface"><span class="material-symbols-outlined">menu</span></button>
     </header>
-    <main class="flex-1 md:ml-[240px] pt-[80px] md:pt-0 p-gutter md:p-margin-desktop min-h-screen relative overflow-hidden bg-slate-900">
+    <main class="flex-1 md:ml-[240px] pt-[80px] md:pt-0 p-gutter md:p-margin-desktop min-h-screen relative overflow-hidden bg-[#011c16]">
         <div class="hidden md:flex justify-between items-center mb-12 border-b border-outline-variant/30 pb-6"><div></div><div class="flex items-center gap-6"></div></div>
         
         <div class="relative w-full h-full max-w-container-max mx-auto" id="view-container">
             <!-- VIEW: LISTAR TODAS -->
             <section class="view-layer flex flex-col gap-8 active" id="view-list">
-                <header class="max-w-3xl">
+                <header class="max-w-5xl">
                     <h2 class="font-display-lg text-on-surface mb-2">Biodiversidade Brasileira <span class="text-primary-container">em Risco</span></h2>
                     <p class="font-body-lg text-on-surface-variant">Sistema Integrado de Monitoramento e Conservação.</p>
                 </header>
@@ -149,7 +148,7 @@
 
             <!-- VIEW: ADICIONAR -->
             <section class="view-layer flex flex-col justify-center items-center h-full min-h-[600px] hidden" id="view-add">
-                <div class="glass-panel p-8 rounded-2xl w-full max-w-2xl border-t-4 border-t-primary-container shadow-[0_10px_40px_rgba(0,0,0,0.5)] bg-slate-800">
+                <div class="glass-panel p-8 rounded-2xl w-full max-w-2xl border-t-4 border-t-primary-container shadow-[0_10px_40px_rgba(0,0,0,0.5)] bg-[#022c22]">
                     <header class="mb-8 border-b border-outline-variant/30 pb-4">
                         <h2 id="title-add-view" class="font-headline-lg text-primary-fixed mb-1 flex items-center gap-2">
                             <span class="material-symbols-outlined text-[32px]">add_box</span>
@@ -162,13 +161,13 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-2">
                                 <label class="font-label-sm text-on-surface uppercase tracking-wider">Nome Comum</label>
-                                <div class="relative neon-focus rounded-lg bg-slate-900 border border-outline-variant transition-all">
+                                <div class="relative focus-within:ring-2 focus-within:ring-primary-container focus-within:border-primary-container rounded-lg bg-[#011c16] border border-outline-variant transition-all">
                                     <input id="form-nome-popular" class="w-full bg-transparent border-none text-on-surface py-3 px-4 focus:ring-0 font-body-md" placeholder="Ex: Onça-pintada" required type="text">
                                 </div>
                             </div>
                             <div class="space-y-2">
                                 <label class="font-label-sm text-on-surface uppercase tracking-wider">Nome Científico</label>
-                                <div class="relative neon-focus rounded-lg bg-slate-900 border border-outline-variant transition-all">
+                                <div class="relative focus-within:ring-2 focus-within:ring-primary-container focus-within:border-primary-container rounded-lg bg-[#011c16] border border-outline-variant transition-all">
                                     <input id="form-nome-cientifico" class="w-full bg-transparent border-none text-on-surface py-3 px-4 focus:ring-0 font-body-md italic" placeholder="Panthera onca" required type="text">
                                 </div>
                             </div>
@@ -176,7 +175,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-2">
                                 <label class="font-label-sm text-on-surface uppercase tracking-wider">Bioma Principal</label>
-                                <div class="relative neon-focus rounded-lg bg-slate-900 border border-outline-variant transition-all">
+                                <div class="relative focus-within:ring-2 focus-within:ring-primary-container focus-within:border-primary-container rounded-lg bg-[#011c16] border border-outline-variant transition-all">
                                     <select id="form-bioma" title="Bioma Principal" required class="w-full bg-transparent border-none text-on-surface py-3 px-4 focus:ring-0 font-body-md appearance-none">
                                         <option class="bg-surface text-on-surface-variant" value="">Selecione um bioma...</option>
                                         <option class="bg-surface" value="Amazônia">Amazônia</option>
@@ -191,7 +190,7 @@
                             </div>
                             <div class="space-y-2">
                                 <label class="font-label-sm text-on-surface uppercase tracking-wider">Status de Conservação</label>
-                                <div class="relative neon-focus rounded-lg bg-slate-900 border border-outline-variant transition-all">
+                                <div class="relative focus-within:ring-2 focus-within:ring-primary-container focus-within:border-primary-container rounded-lg bg-[#011c16] border border-outline-variant transition-all">
                                     <select id="form-grau-ameaca" title="Status de Conservação" required class="w-full bg-transparent border-none text-on-surface py-3 px-4 focus:ring-0 font-body-md appearance-none">
                                         <option class="bg-surface text-on-surface-variant" value="">Classificação IUCN...</option>
                                         <option class="bg-surface text-tertiary-container" value="Vulnerável">Vulnerável (VU)</option>
@@ -204,19 +203,19 @@
                         </div>
                         <div class="space-y-2">
                             <label class="font-label-sm text-on-surface uppercase tracking-wider">Observações</label>
-                            <div class="relative neon-focus rounded-lg bg-slate-900 border border-outline-variant transition-all">
-                                <textarea id="form-observacoes" class="w-full bg-transparent border-none text-on-surface py-3 px-4 focus:ring-0 font-body-md" placeholder="Insira observações relevantes sobre o estado da espécie..." rows="3"></textarea>
+                            <div class="relative focus-within:ring-2 focus-within:ring-primary-container focus-within:border-primary-container rounded-lg bg-[#011c16] border border-outline-variant transition-all">
+                                <textarea id="for m-observacoes" class="w-full bg-transparent border-none text-on-surface py-3 px-4 focus:ring-0 font-body-md" placeholder="Insira observações relevantes sobre o estado da espécie..." rows="3"></textarea>
                             </div>
                         </div>
                         <div class="space-y-2">
                             <label class="font-label-sm text-on-surface uppercase tracking-wider">Foto da Espécie</label>
-                            <div class="relative neon-focus rounded-lg bg-slate-900 border border-outline-variant transition-all p-2 flex items-center">
+                            <div class="relative focus-within:ring-2 focus-within:ring-primary-container focus-within:border-primary-container rounded-lg bg-[#011c16] border border-outline-variant transition-all p-2 flex items-center">
                                 <input id="form-imagem" title="Upload de Foto" accept="image/jpeg, image/png, image/webp" class="w-full text-on-surface font-body-md file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-primary-container/20 file:text-primary-fixed hover:file:bg-primary-container/30 cursor-pointer" type="file">
                             </div>
                         </div>
                         <div class="pt-6 flex justify-end gap-4 border-t border-outline-variant/30">
                             <button type="reset" onclick="window.resetFormState()" class="px-6 py-2 rounded-lg font-label-sm uppercase text-on-surface-variant hover:text-on-surface transition-colors border border-transparent hover:border-outline-variant">Limpar</button>
-                            <button type="submit" id="btn-add-submit" class="px-8 py-2 rounded-lg font-label-sm uppercase bg-primary-container text-on-primary-container hover:bg-primary-fixed-dim transition-colors neon-glow flex items-center gap-2">
+                            <button type="submit" id="btn-add-submit" class="px-8 py-2 rounded-lg font-label-sm uppercase bg-primary-container text-on-primary-container hover:bg-primary-fixed-dim transition-colors hover:shadow-lg hover:shadow-primary-container/20 flex items-center gap-2">
                                 <span class="material-symbols-outlined text-[18px]" id="icon-add-submit">save</span>
                                 <span id="text-add-submit">Registrar Espécie</span>
                             </button>
@@ -227,13 +226,13 @@
 
             <!-- VIEW: DELETAR -->
             <section class="view-layer hidden flex flex-col justify-center items-center h-full min-h-[600px]" id="view-delete">
-                <div class="glass-panel p-8 rounded-2xl w-full max-w-lg border-t-4 border-t-error shadow-[0_10px_40px_rgba(0,0,0,0.5)] text-center bg-slate-800">
+                <div class="glass-panel p-8 rounded-2xl w-full max-w-lg border-t-4 border-t-error shadow-[0_10px_40px_rgba(0,0,0,0.5)] text-center bg-[#022c22]">
                     <span class="material-symbols-outlined text-[48px] text-error mb-4">warning</span>
                     <h2 class="font-headline-lg text-on-surface mb-2">Remover Registro</h2>
                     <p class="font-body-md text-on-surface-variant mb-8">Esta ação é irreversível. Insira o ID exato da espécie para confirmar a exclusão do banco de dados.</p>
                     <form onsubmit="event.preventDefault(); window.deletarEspecie(event);">
                         <div class="relative max-w-sm mx-auto group">
-                            <input id="input-delete-id" required type="number" min="1" class="w-full bg-slate-900 border-2 border-outline-variant text-center text-on-surface py-4 px-4 rounded-lg font-mono text-lg focus:outline-none focus:border-error focus:ring-1 focus:ring-error transition-all" placeholder="Ex: 42">
+                            <input id="input-delete-id" required type="number" min="1" class="w-full bg-[#011c16] border-2 border-outline-variant text-center text-on-surface py-4 px-4 rounded-lg font-mono text-lg focus:outline-none focus:border-error focus:ring-1 focus:ring-error transition-all" placeholder="Ex: 42">
                         </div>
                         <button type="submit" id="btn-delete-submit" class="mt-8 px-8 py-3 rounded-lg font-label-sm uppercase bg-error text-on-error hover:bg-error-container hover:text-error transition-colors w-full max-w-sm mx-auto flex items-center justify-center gap-2 border border-transparent hover:border-error">
                             <span class="material-symbols-outlined text-[18px]" id="icon-delete-submit">delete_forever</span>
@@ -245,25 +244,25 @@
 
             <!-- VIEW: LISTAR POR AMEAÇA -->
             <section class="view-layer flex flex-col gap-8 hidden" id="view-threat">
-                <header class="max-w-3xl">
+                <header class="max-w-5xl">
                     <h2 class="font-display-lg text-on-surface mb-2">Buscar por grau de ameaça</h2>
                     <p class="font-body-lg text-on-surface-variant">Classificação baseada nos critérios da IUCN.</p>
                 </header>
                 <div class="flex flex-col sm:flex-row items-center gap-4 mb-8">
                     <label class="font-label-sm text-on-surface-variant uppercase tracking-widest">Filtrar Resultados:</label>
-                    <div class="relative neon-focus rounded-lg bg-slate-900 border border-outline-variant transition-all min-w-[240px]">
+                    <div class="relative focus-within:ring-2 focus-within:ring-primary-container focus-within:border-primary-container rounded-lg bg-[#011c16] border border-outline-variant transition-all min-w-[240px]">
                         <select id="select-threat-filter" title="Filtro de Grau de Ameaça" class="w-full bg-transparent border-none text-on-surface py-3 pl-4 pr-10 focus:ring-0 font-body-md appearance-none cursor-pointer">
-                            <option class="bg-slate-900" value="all">Todas as Categorias</option>
-                            <option class="bg-slate-900 text-tertiary-container" value="Vulnerável">Vulnerável (VU)</option>
-                            <option class="bg-slate-900 text-orange-400" value="Em perigo">Em Perigo (EN)</option>
-                            <option class="bg-slate-900 text-error" value="Criticamente em perigo">Criticamente em Perigo (CR)</option>
+                            <option class="bg-[#011c16]" value="all">Todas as Categorias</option>
+                            <option class="bg-[#011c16] text-tertiary-container" value="Vulnerável">Vulnerável (VU)</option>
+                            <option class="bg-[#011c16] text-orange-400" value="Em perigo">Em Perigo (EN)</option>
+                            <option class="bg-[#011c16] text-error" value="Criticamente em perigo">Criticamente em Perigo (CR)</option>
                         </select>
                         <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-primary-container">filter_list</span>
                     </div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                     <!-- Vulnerável -->
-                    <button onclick="document.getElementById('select-threat-filter').value='Vulnerável'; document.getElementById('select-threat-filter').dispatchEvent(new Event('change'));" class="p-6 rounded-2xl bg-slate-800 border-2 border-tertiary-container/30 hover:border-tertiary-container hover:bg-tertiary-container/5 transition-all text-left flex flex-col justify-between h-40">
+                    <button onclick="document.getElementById('select-threat-filter').value='Vulnerável'; document.getElementById('select-threat-filter').dispatchEvent(new Event('change'));" class="p-6 rounded-2xl bg-[#022c22] border-2 border-tertiary-container/30 hover:border-tertiary-container hover:bg-tertiary-container/5 transition-all text-left flex flex-col justify-between h-40">
                         <div class="flex justify-between items-start">
                             <span class="font-headline-md text-tertiary-container">Vulnerável</span>
                             <span class="material-symbols-outlined text-tertiary-container opacity-50">warning</span>
@@ -274,7 +273,7 @@
                         </div>
                     </button>
                     <!-- Em Perigo -->
-                    <button onclick="document.getElementById('select-threat-filter').value='Em perigo'; document.getElementById('select-threat-filter').dispatchEvent(new Event('change'));" class="p-6 rounded-2xl bg-slate-800 border-2 border-orange-400/30 hover:border-orange-400 hover:bg-orange-400/5 transition-all text-left flex flex-col justify-between h-40">
+                    <button onclick="document.getElementById('select-threat-filter').value='Em perigo'; document.getElementById('select-threat-filter').dispatchEvent(new Event('change'));" class="p-6 rounded-2xl bg-[#022c22] border-2 border-orange-400/30 hover:border-orange-400 hover:bg-orange-400/5 transition-all text-left flex flex-col justify-between h-40">
                         <div class="flex justify-between items-start">
                             <span class="font-headline-md text-orange-400">Em Perigo</span>
                             <span class="material-symbols-outlined text-orange-400 opacity-50">gpp_maybe</span>
@@ -285,7 +284,7 @@
                         </div>
                     </button>
                     <!-- Criticamente em Perigo -->
-                    <button onclick="document.getElementById('select-threat-filter').value='Criticamente em perigo'; document.getElementById('select-threat-filter').dispatchEvent(new Event('change'));" class="p-6 rounded-2xl bg-slate-800 border-2 border-error/30 hover:border-error hover:bg-error/5 transition-all text-left flex flex-col justify-between h-40">
+                    <button onclick="document.getElementById('select-threat-filter').value='Criticamente em perigo'; document.getElementById('select-threat-filter').dispatchEvent(new Event('change'));" class="p-6 rounded-2xl bg-[#022c22] border-2 border-error/30 hover:border-error hover:bg-error/5 transition-all text-left flex flex-col justify-between h-40">
                         <div class="flex justify-between items-start">
                             <span class="font-headline-md text-error">Criticamente em Perigo</span>
                             <span class="material-symbols-outlined text-error opacity-50">error</span>
@@ -312,10 +311,10 @@
                     <p class="font-body-lg text-on-surface-variant mb-10">Insira o identificador único da espécie para acesso direto aos dados.</p>
                     <form class="w-full relative group max-w-xl" onsubmit="event.preventDefault(); window.buscarPorId(event);">
                         <div class="absolute -inset-1 bg-gradient-to-r from-primary-container to-secondary-container rounded-xl blur opacity-25 group-focus-within:opacity-75 transition duration-500"></div>
-                        <div class="relative flex items-center w-full bg-slate-900 rounded-xl border border-outline-variant/50 focus-within:border-primary-container p-2">
+                        <div class="relative flex items-center w-full bg-[#011c16] rounded-xl border border-outline-variant/50 focus-within:border-primary-container p-2">
                             <span class="material-symbols-outlined text-outline-variant ml-4 mr-2 group-focus-within:text-primary-container transition-colors">fingerprint</span>
                             <input id="input-search-id" class="w-full bg-transparent border-none text-on-surface py-4 px-2 focus:ring-0 font-mono text-xl uppercase placeholder:normal-case placeholder:text-outline-variant/70" placeholder="Ex: 42" type="text" required>
-                            <button type="submit" id="btn-search-id" class="ml-2 px-8 py-4 rounded-lg font-label-sm uppercase bg-primary-container text-on-primary-container hover:bg-primary-fixed-dim transition-colors neon-glow whitespace-nowrap flex items-center gap-2">
+                            <button type="submit" id="btn-search-id" class="ml-2 px-8 py-4 rounded-lg font-label-sm uppercase bg-primary-container text-on-primary-container hover:bg-primary-fixed-dim transition-colors hover:shadow-lg hover:shadow-primary-container/20 whitespace-nowrap flex items-center gap-2">
                                 <span class="material-symbols-outlined text-[18px] hidden" id="icon-search-id">autorenew</span>
                                 Scan
                             </button>
@@ -331,14 +330,14 @@
 
     <!-- Details Modal -->
     <div class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4" id="species-modal">
-        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm modal-close cursor-pointer"></div>
-        <div class="relative w-full max-w-3xl bg-slate-800 rounded-2xl overflow-hidden border border-outline-variant shadow-2xl flex flex-col md:flex-row transform scale-95 opacity-0 transition-all duration-300" id="modal-panel">
-            <div class="w-full md:w-2/5 h-64 md:h-auto relative bg-slate-900">
+        <div class="absolute inset-0 bg-[#011c16]/80 backdrop-blur-sm modal-close cursor-pointer"></div>
+        <div class="relative w-full max-w-5xl bg-[#022c22] rounded-2xl overflow-hidden border border-outline-variant shadow-2xl flex flex-col md:flex-row transform scale-95 opacity-0 transition-all duration-300" id="modal-panel">
+            <div class="w-full md:w-2/5 h-64 md:h-auto relative bg-[#011c16]">
                 <img alt="Espécie detalhe" class="w-full h-full object-cover" id="modal-img" src="">
                 <div class="absolute inset-0 bg-gradient-to-t from-slate-800 via-transparent to-transparent md:bg-gradient-to-r"></div>
             </div>
             <div class="w-full md:w-3/5 p-8 flex flex-col">
-                <button class="absolute top-4 right-4 text-on-surface-variant hover:text-on-surface modal-close p-1 rounded-full hover:bg-slate-700 transition-colors"><span class="material-symbols-outlined">close</span></button>
+                <button class="absolute top-4 right-4 text-on-surface-variant hover:text-on-surface modal-close p-1 rounded-full hover:bg-[#044234] transition-colors"><span class="material-symbols-outlined">close</span></button>
                 <div class="flex items-center gap-3 mb-2">
                     <span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider" id="modal-badge"></span>
                     <span class="text-label-sm text-outline font-mono">ID: <span id="modal-id"></span></span>
@@ -362,7 +361,7 @@
                     <button onclick="window.editarEspecie()" class="flex-1 py-2 rounded-lg border border-primary-container text-primary-container hover:bg-primary-container/10 transition-colors font-label-sm uppercase flex items-center justify-center gap-2">
                         <span class="material-symbols-outlined text-[18px]">edit_document</span> Editar
                     </button>
-                    <button class="flex-1 py-2 rounded-lg bg-slate-700 border border-outline-variant text-on-surface hover:bg-slate-600 transition-colors font-label-sm uppercase flex items-center justify-center gap-2 modal-close">
+                    <button class="flex-1 py-2 rounded-lg bg-[#044234] border border-outline-variant text-on-surface hover:bg-slate-600 transition-colors font-label-sm uppercase flex items-center justify-center gap-2 modal-close">
                         <span class="material-symbols-outlined text-[18px]">close</span> Fechar
                     </button>
                 </div>
@@ -371,7 +370,7 @@
     </div>
 
     <!-- Toast Container -->
-    <div id="toast" class="toast flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl border bg-slate-800">
+    <div id="toast" class="toast flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl border bg-[#022c22]">
         <span id="toast-icon" class="material-symbols-outlined text-[24px]"></span>
         <span id="toast-msg" class="font-body-md font-bold"></span>
     </div>
@@ -385,10 +384,10 @@
             const toastMsg = document.getElementById('toast-msg');
             
             if (type === 'success') {
-                toast.className = "toast show flex items-center gap-3 px-6 py-4 rounded-xl shadow-[0_10px_30px_rgba(0,255,135,0.2)] border border-primary-container bg-slate-800 text-primary-fixed";
+                toast.className = "toast show flex items-center gap-3 px-6 py-4 rounded-xl shadow-[0_10px_30px_rgba(0,255,135,0.2)] border border-primary-container bg-[#022c22] text-primary-fixed";
                 toastIcon.textContent = "check_circle";
             } else {
-                toast.className = "toast show flex items-center gap-3 px-6 py-4 rounded-xl shadow-[0_10px_30px_rgba(255,0,0,0.2)] border border-error bg-slate-800 text-error";
+                toast.className = "toast show flex items-center gap-3 px-6 py-4 rounded-xl shadow-[0_10px_30px_rgba(255,0,0,0.2)] border border-error bg-[#022c22] text-error";
                 toastIcon.textContent = "error";
             }
             toastMsg.textContent = message;
@@ -433,7 +432,7 @@
             const cacheBuster = '?v=' + new Date().getTime();
             return `
             <article class="species-card group relative rounded-xl overflow-hidden cursor-pointer border border-outline-variant/30 hover:border-primary-container/50 transition-all duration-300" onclick="openModal(${esp.id})">
-                <div class="absolute inset-0 z-0 bg-slate-800">
+                <div class="absolute inset-0 z-0 bg-[#022c22]">
                     <img alt="${escapeHTML(esp.nome_popular)}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-60 group-hover:opacity-100" src="/imagens/${escapeHTML(imgName)}${cacheBuster}" onerror="this.src='https://via.placeholder.com/400x300?text=Sem+Foto'">
                     <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent"></div>
                 </div>
